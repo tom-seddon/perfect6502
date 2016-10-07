@@ -152,10 +152,13 @@ mWrite(uint16_t a, uint8_t d)
 static inline void
 handleMemory(struct state_t *state)
 {
-	if (isNodeHigh(state, rw))
-		writeDataBus(state, mRead(readAddressBus(state)));
+    int read = isNodeHigh(state, rw);
+    uint16_t addr = readAddressBus(state);
+
+	if (read)
+		writeDataBus(state, mRead(addr));
 	else
-		mWrite(readAddressBus(state), readDataBus(state));
+		mWrite(addr, readDataBus(state));
 }
 
 /************************************************************
