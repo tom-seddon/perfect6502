@@ -234,7 +234,7 @@ chipStatus(state_t *state)
 	uint8_t d = readDataBus(state);
 	BOOL r_w = isNodeHigh(state, rw);
 
-	printf("halfcyc:%d phi0:%d AB:%04X D:%02X RnW:%d PC:%04X A:%02X X:%02X Y:%02X SP:%02X P:%02X IR:%02X",
+	printf("halfcyc:%-9d phi0:%d AB:%04X D:%02X RnW:%d PC:%04X A:%02X X:%02X Y:%02X SP:%02X P:%02X IR:%02X",
 		   cycle,
 		   clk,
 		   a,
