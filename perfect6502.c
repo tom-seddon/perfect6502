@@ -51,6 +51,12 @@ writeDataBus(state_t *state, uint8_t d)
 	writeNodes(state, 8, (nodenum_t[]){ db0, db1, db2, db3, db4, db5, db6, db7 }, d);
 }
 
+void
+setIRQ(state_t *state, int value)
+{
+    writeNodes(state, 1, (nodenum_t[]){ irq }, value);
+}
+
 BOOL
 readRW(state_t *state)
 {
@@ -109,6 +115,18 @@ uint16_t
 readPC(state_t *state)
 {
 	return (readPCH(state) << 8) | readPCL(state);
+}
+
+int
+isPhi2(state_t *state)
+{
+    return isNodeHigh(state, clk0);
+}
+
+int
+isRead(state_t *state)
+{
+    return isNodeHigh(state, rw);
 }
 
 /************************************************************
