@@ -30,6 +30,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "types.h"
+#include "netlist_sim.h"
+#include "perfect6502.h"
 
 /* the smallest types to fit the numbers */
 typedef uint16_t transnum_t;
@@ -60,7 +62,7 @@ typedef struct {
 	count_t count;
 } list_t;
 
-typedef struct {
+struct state_t {
 	nodenum_t nodes;
 	nodenum_t transistors;
 	nodenum_t vss;
@@ -107,7 +109,7 @@ typedef struct {
 		contains_vcc,
 		contains_vss
 	} group_contains_value;
-} state_t;
+};
 
 /************************************************************
  *
