@@ -20,6 +20,6 @@ extern int isRead(state_t *state);
 
 extern void setIRQ(state_t *state, int value);
 
-extern unsigned char memory[65536];
-extern unsigned int cycle;
-extern unsigned int transistors;
+extern unsigned char p6502_memory[65536];
+extern unsigned int p6502_cycle;
+//extern unsigned int transistors;

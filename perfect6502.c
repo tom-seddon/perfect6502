@@ -135,18 +135,18 @@ isRead(state_t *state)
  *
  ************************************************************/
 
-uint8_t memory[65536];
+uint8_t p6502_memory[65536];
 
 static uint8_t
 mRead(uint16_t a)
 {
-	return memory[a];
+	return p6502_memory[a];
 }
 
 static void
 mWrite(uint16_t a, uint8_t d)
 {
-	memory[a] = d;
+	p6502_memory[a] = d;
 }
 
 static inline void
@@ -167,7 +167,7 @@ handleMemory(struct state_t *state)
  *
  ************************************************************/
 
-static unsigned int cycle;
+static unsigned int p6502_cycle;
 
 void
 step(state_t *state)
@@ -182,7 +182,7 @@ step(state_t *state)
 	if (!clk)
 		handleMemory(state);
 
-	cycle++;
+	p6502_cycle++;
 }
 
 state_t *
@@ -215,7 +215,7 @@ initAndResetChip()
 	setNode(state, res, 1);
 	recalcNodeList(state);
 
-	cycle = 0;
+	p6502_cycle = 0;
 
 	return state;
 }
@@ -235,7 +235,7 @@ chipStatus(state_t *state)
 	BOOL r_w = isNodeHigh(state, rw);
 
 	printf("halfcyc:%-9d phi0:%d AB:%04X D:%02X RnW:%d PC:%04X A:%02X X:%02X Y:%02X SP:%02X P:%02X IR:%02X",
-		   cycle,
+		   p6502_cycle,
 		   clk,
 		   a,
 		   d,
@@ -250,7 +250,7 @@ chipStatus(state_t *state)
 
 	if (clk) {
 		if (r_w)
-		printf(" R$%04X=$%02X", a, memory[a]);
+		printf(" R$%04X=$%02X", a, p6502_memory[a]);
 		else
 		printf(" W$%04X=$%02X", a, d);
 	}

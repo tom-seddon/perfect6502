@@ -21,7 +21,7 @@ init_monitor()
 {
 	FILE *f;
 	f = fopen("cbmbasic.bin", "rb");
-	fread(memory + 0xA000, 1, 17591, f);
+	fread(p6502_memory + 0xA000, 1, 17591, f);
 	fclose(f);
 
 	/*
@@ -30,9 +30,9 @@ init_monitor()
 	 * the CPU state and returns
 	 */
 	for (unsigned short addr = 0xFF90; addr < 0xFFF3; addr += 3) {
-		memory[addr+0] = 0x4C;
-		memory[addr+1] = 0x00;
-		memory[addr+2] = 0xF8;
+		p6502_memory[addr+0] = 0x4C;
+		p6502_memory[addr+1] = 0x00;
+		p6502_memory[addr+2] = 0xF8;
 	}
 
 	/*
@@ -41,12 +41,12 @@ init_monitor()
 	 * after a RESET), so RESET jumps to 0xF000, which contains
 	 * a JSR to the actual start of cbmbasic
 	 */
-	memory[0xf000] = 0x20;
-	memory[0xf001] = 0x94;
-	memory[0xf002] = 0xE3;
+	p6502_memory[0xf000] = 0x20;
+	p6502_memory[0xf001] = 0x94;
+	p6502_memory[0xf002] = 0xE3;
 	
-	memory[0xfffc] = 0x00;
-	memory[0xfffd] = 0xF0;
+	p6502_memory[0xfffc] = 0x00;
+	p6502_memory[0xfffd] = 0xF0;
 }
 
 void
@@ -76,17 +76,17 @@ handle_monitor(void *state)
 		 * put code there that loads the return state of the
 		 * KERNAL function and returns to the caller
 		 */
-		memory[0xf800] = 0xA9; /* LDA #P */
-		memory[0xf801] = P;
-		memory[0xf802] = 0x48; /* PHA    */
-		memory[0xf803] = 0xA9; /* LHA #A */
-		memory[0xf804] = A;
-		memory[0xf805] = 0xA2; /* LDX #X */
-		memory[0xf806] = X;
-		memory[0xf807] = 0xA0; /* LDY #Y */
-		memory[0xf808] = Y;
-		memory[0xf809] = 0x28; /* PLP    */
-		memory[0xf80a] = 0x60; /* RTS    */
+		p6502_memory[0xf800] = 0xA9; /* LDA #P */
+		p6502_memory[0xf801] = P;
+		p6502_memory[0xf802] = 0x48; /* PHA    */
+		p6502_memory[0xf803] = 0xA9; /* LHA #A */
+		p6502_memory[0xf804] = A;
+		p6502_memory[0xf805] = 0xA2; /* LDX #X */
+		p6502_memory[0xf806] = X;
+		p6502_memory[0xf807] = 0xA0; /* LDY #Y */
+		p6502_memory[0xf808] = Y;
+		p6502_memory[0xf809] = 0x28; /* PLP    */
+		p6502_memory[0xf80a] = 0x60; /* RTS    */
 		/*
 		 * XXX we could do RTI instead of PLP/RTS, but RTI seems to be
 		 * XXX broken in the chip dump - after the KERNAL call at 0xFF90,

@@ -21,7 +21,7 @@ static uint8_t temp_lo, temp_hi;
 static uint16_t AB;
 static uint8_t DB;
 static BOOL RW;
-extern uint8_t memory[65536];
+extern uint8_t p6502_memory[65536];
 
 #define RW_WRITE 0
 #define RW_READ 1
@@ -29,7 +29,7 @@ extern uint8_t memory[65536];
 uint8_t
 LOAD(uint16_t a)
 {
-	return memory[a];
+	return p6502_memory[a];
 }
 
 #define T1 (1<<0)
@@ -232,18 +232,18 @@ sta_abs()
 	}
 }
 
-static int cycle = 0;
+static int p6502_cycle = 0;
 
 void
 emulate_step()
 {
 	/* memory */
 	if (RW == RW_READ) {
-		printf("PEEK(%04X)=%02X ", AB, memory[AB]);
-		DB = memory[AB];
+		printf("PEEK(%04X)=%02X ", AB, p6502_memory[AB]);
+		DB = p6502_memory[AB];
 	} else {
 		printf("POKE %04X, %02X ", AB, DB);
-		memory[AB] = DB;
+		p6502_memory[AB] = DB;
 	}
 
 	//printf("T%d PC=%04X ", t, PC);
@@ -269,7 +269,7 @@ emulate_step()
 	}
 
 	printf("\ncycle:%d phi0:1 AB:%04X D:%02X RnW:%d PC:%04X A:%02X X:%02X Y:%02X SP:%02X P:%02X IR:%02X",
-			cycle,
+			p6502_cycle,
 			AB,
 	        DB,
 	        RW,
@@ -293,7 +293,7 @@ void
 reset_emu()
 {
 	init();
-	PC = memory[0xFFFC] | memory[0xFFFD] << 8;
+	PC = p6502_memory[0xFFFC] | p6502_memory[0xFFFD] << 8;
 	printf("PC %x\n", PC);
 	IFETCH();
 }
@@ -303,10 +303,10 @@ emu_measure_instruction()
 {
 
 	for (;;) {
-		printf("cycle %d: ", cycle);
+		printf("cycle %d: ", p6502_cycle);
 		emulate_step();
 		printf("\n");
-		cycle++;
+		p6502_cycle++;
 	}
 	return 0;
 }
