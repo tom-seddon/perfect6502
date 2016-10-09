@@ -1,25 +1,24 @@
 #include "perfect6502.h"
 #include "runtime.h"
 #include "runtime_init.h"
+#include <stdio.h>
+#include <stdint.h>
+#include <string.h>
 
 int
 main()
 {
-	int clk = 0;
+    void *state=initAndResetChip();
 
-	void *state = initAndResetChip();
+    memset(memory,0,65536);
 
-	/* set up memory for user program */
-	init_monitor();
+    memory[0xfffc]=0x10;
+    memory[0xfffe]=0x30;
 
-	/* emulate the 6502! */
-	for (;;) {
-		step(state);
-		clk = !clk;
-		if (clk)
-			handle_monitor(state);
+    memory[0x30]=0xea;
 
-//		chipStatus(state);
-		//if (!(cycle % 1000)) printf("%d\n", cycle);
-	};
+    for(int i=0;i<50;++i) {
+        step(state);
+        chipStatus(state);
+    }
 }
