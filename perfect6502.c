@@ -167,7 +167,7 @@ handleMemory(struct state_t *state)
  *
  ************************************************************/
 
-static unsigned int p6502_cycle;
+unsigned int p6502_cycle;
 
 void
 step(state_t *state)

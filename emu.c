@@ -232,8 +232,6 @@ sta_abs()
 	}
 }
 
-static int p6502_cycle = 0;
-
 void
 emulate_step()
 {

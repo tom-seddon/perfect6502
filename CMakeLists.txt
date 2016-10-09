@@ -19,8 +19,8 @@ set(CBMBASIC_SRCS
   runtime.c runtime.h
   runtime_init.c runtime_init.h
   plugin.c plugin.h
-  console.c console.h
-  emu.c)
+  console.c console.h)
+  # emu.c)
 
 if(MSVC)
   set(CBMBASIC_SRCS
