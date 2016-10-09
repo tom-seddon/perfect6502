@@ -54,7 +54,7 @@ writeDataBus(state_t *state, uint8_t d)
 void
 setIRQ(state_t *state, int value)
 {
-    writeNodes(state, 1, (nodenum_t[]){ irq }, value);
+    setNode(state, irq, !!value);
 }
 
 BOOL
